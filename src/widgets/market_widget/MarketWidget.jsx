@@ -72,7 +72,6 @@ export default function MarketWidget() {
       )}
       <h2>Market</h2>
       <div className="market-widget__tabs tabs">
-        ,
         <button
           key={"ALL"}
           className={`tab${tabFilter === null ? " tab--active" : ""}`}
