@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import MarketTable from "./components/MarketTable";
 import useWebSocket from "../../hooks/useWebSocket";
 
@@ -8,9 +7,8 @@ const markets = ["BNB", "BTC", "ALTS", "USDⓈ"];
 const calcChange = (elem) => {
   elem.ch = (elem.c / elem.o - 1) * 100;
 };
-
-const restUrl =
-  "https://www.binance.com/exchange-api/v1/public/asset-service/product/get-products";
+// const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+const restUrl = "https://binance-proxy.herokuapp.com/api";
 const wsUrl = "wss://stream.binance.com/stream?streams=!miniTicker@arr";
 
 export default function MarketWidget() {
@@ -40,11 +38,12 @@ export default function MarketWidget() {
     onErr
   );
   useEffect(() => {
-    axios
-      .get(restUrl)
+    fetch(restUrl)
+      .then((res) => res.json())
       .then((res) => {
-        res.data.data.forEach(calcChange);
-        setMarketData(res.data.data);
+        res.data.forEach(calcChange);
+        console.log(res.data);
+        setMarketData(new Map(res.data.map((elem) => [elem.s, elem])));
       })
       .catch((err) => console.log(err));
   }, []);
