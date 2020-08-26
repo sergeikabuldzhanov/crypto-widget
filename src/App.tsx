@@ -1,6 +1,6 @@
 import React from "react";
-import MarketWidget from "./widgets/market_widget/MarketWidget";
 import "./App.css";
+import MarketWidget from "./Components/MarketWidget";
 
 function App() {
   return (

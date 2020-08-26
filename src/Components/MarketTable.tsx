@@ -1,8 +1,14 @@
 import React from "react";
 import MarketRow from "./MarketRow";
-import useSortableData from "../../../hooks/useSortableData";
+import { PairData } from "./MarketWidget";
+import useSortableData from "../Hooks/UseSortableData";
 
-export default function MarketTable({ filter, marketData }) {
+interface IProps {
+  filter: string | null;
+  marketData: PairData[];
+}
+
+export default function MarketTable({ filter, marketData }: IProps) {
   let { items, requestSort } = useSortableData(marketData, null);
   if (filter) items = items.filter((data) => data.pm === filter);
 

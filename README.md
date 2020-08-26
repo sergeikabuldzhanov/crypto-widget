@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a2c7c98-df52-4c19-a5d0-5da5393572e5/deploy-status)](https://app.netlify.com/sites/crypto-widget/deploys)
+
 This is a small cryptocurrency trading widget. It uses Binance API to fetch a list of currently traded currency pairs and subscribes to regular updates via the WebSocket API. I have also implemented custom connect/disconnect logic for the WS. Built with React and minimal CSS for styling.
 
 Note: this project is using a proxy server hosted on heroku, since Binance API doesn't support CORS requests, if the heroku instance falls asleep, it may take up to 20 seconds to load the initial data.
