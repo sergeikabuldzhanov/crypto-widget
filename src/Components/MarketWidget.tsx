@@ -16,6 +16,7 @@ export type MarketData = Map<string, PairData>;
 export default function MarketWidget() {
   const [marketData, setMarketData] = useState<MarketData>(new Map());
   const [tabFilter, setTabFilter] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   // we are not required to do anything to subscribe to this endpoint
   const subscribe = useCallback(() => {}, []);
@@ -41,6 +42,7 @@ export default function MarketWidget() {
   );
 
   useEffect(() => {
+    setLoading(true);
     fetch(restUrl)
       .then((res) => res.json())
       .then((res) => {
@@ -48,10 +50,12 @@ export default function MarketWidget() {
         setMarketData(
           new Map(res.data.map((elem: PairData) => [elem.s, elem]))
         );
+        connect();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }, []);
-  
+
   return (
     <section className="market-widget">
       {isActive ? (
