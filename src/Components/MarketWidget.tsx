@@ -42,19 +42,21 @@ export default function MarketWidget() {
   );
 
   useEffect(() => {
-    setLoading(true);
-    fetch(restUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        res.data.forEach(setChange);
-        setMarketData(
-          new Map(res.data.map((elem: PairData) => [elem.s, elem]))
-        );
-        connect();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, []);
+    if (!marketData.size) {
+      setLoading(true);
+      fetch(restUrl)
+        .then((res) => res.json())
+        .then((res) => {
+          res.data.forEach(setChange);
+          setMarketData(
+            new Map(res.data.map((elem: PairData) => [elem.s, elem]))
+          );
+          connect();
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
+    }
+  }, [connect, marketData.size]);
 
   return (
     <section className="market-widget">
@@ -81,10 +83,14 @@ export default function MarketWidget() {
       )}
       <h2>Market</h2>
       <Tabs tabs={markets} tabFilter={tabFilter} setTabFilter={setTabFilter} />
-      <MarketTable
-        filter={tabFilter}
-        marketData={Array.from(marketData.values())}
-      />
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <MarketTable
+          filter={tabFilter}
+          marketData={Array.from(marketData.values())}
+        />
+      )}
     </section>
   );
 }
